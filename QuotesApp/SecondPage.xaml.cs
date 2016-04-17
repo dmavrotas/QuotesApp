@@ -7,10 +7,14 @@ namespace QuotesApp
 {
     public sealed partial class SecondPage
     {
+        #region Constructors
+
         public SecondPage()
         {
             InitializeComponent();
         }
+
+        #endregion
 
         private void GoBackButtonClick(object sender, RoutedEventArgs e)
         {
