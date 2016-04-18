@@ -6,19 +6,24 @@ namespace QuotesApp
 {
     public sealed partial class MainPage
     {
+        #region Members
+
         public MainViewModel Vm => (MainViewModel)DataContext;
+
+        #endregion
+
+        #region Constructors
 
         public MainPage()
         {
             InitializeComponent();
 
             SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManagerBackRequested;
-
-            Loaded += (s, e) =>
-            {
-                Vm.RunClock();
-            };
         }
+
+        #endregion
+
+        #region System Events
 
         private void SystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
         {
@@ -31,8 +36,9 @@ namespace QuotesApp
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            Vm.StopClock();
             base.OnNavigatingFrom(e);
         }
+
+        #endregion
     }
 }

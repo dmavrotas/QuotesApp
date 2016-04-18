@@ -11,11 +11,17 @@ namespace QuotesApp
 {
     sealed partial class App
     {
+        #region Constructors
+
         public App()
         {
             InitializeComponent();
             Suspending += OnSuspending;
         }
+
+        #endregion
+
+        #region Events
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -68,10 +74,18 @@ namespace QuotesApp
                 HandleNotificationMessage);
         }
 
+        #endregion
+
+        #region Functions
+
         private void HandleNotificationMessage(NotificationMessageAction<string> message)
         {
             message.Execute("Success (from App.xaml.cs)!");
         }
+
+        #endregion
+
+        #region System Events
 
         /// <summary>
         /// Invoked when Navigation to a certain page fails
@@ -96,5 +110,7 @@ namespace QuotesApp
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        #endregion
     }
 }

@@ -12,102 +12,34 @@ namespace QuotesApp.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public const string ClockPropertyName = "Clock";
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
+        #region Members
 
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
-        private string _clock = "Starting...";
-        private int _counter;
         private RelayCommand _incrementCommand;
         private RelayCommand<string> _navigateCommand;
-        private string _originalTitle;
-        private bool _runClock;
         private RelayCommand _sendMessageCommand;
         private RelayCommand _showDialogCommand;
         private string _welcomeTitle = string.Empty;
 
-        public string Clock
-        {
-            get
-            {
-                return _clock;
-            }
-            set
-            {
-                Set(ClockPropertyName, ref _clock, value);
-            }
-        }
+        #endregion
 
-        public RelayCommand IncrementCommand
-        {
-            get
-            {
-                return _incrementCommand
-                    ?? (_incrementCommand = new RelayCommand(
-                    () =>
-                    {
-                        WelcomeTitle = string.Format("Counter clicked {0} times", ++_counter);
-                    }));
-            }
-        }
+        #region Commands
 
         public RelayCommand<string> NavigateCommand
         {
             get
             {
-                return _navigateCommand
-                       ?? (_navigateCommand = new RelayCommand<string>(
-                           p => _navigationService.NavigateTo(ViewModelLocator.SecondPageKey, p),
-                           p => !string.IsNullOrEmpty(p)));
+                return _navigateCommand;
+                       //?? (_navigateCommand = new RelayCommand<string>(
+                       //    p => _navigationService.NavigateTo(ViewModelLocator.SecondPageKey, p),
+                       //    p => !string.IsNullOrEmpty(p)));
             }
         }
 
-        public RelayCommand SendMessageCommand
-        {
-            get
-            {
-                return _sendMessageCommand
-                    ?? (_sendMessageCommand = new RelayCommand(
-                    () =>
-                    {
-                        Messenger.Default.Send(
-                            new NotificationMessageAction<string>(
-                                "Testing",
-                                reply =>
-                                {
-                                    WelcomeTitle = reply;
-                                }));
-                    }));
-            }
-        }
+        #endregion
 
-        public RelayCommand ShowDialogCommand
-        {
-            get
-            {
-                return _showDialogCommand
-                       ?? (_showDialogCommand = new RelayCommand(
-                           async () =>
-                           {
-                               var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
-                               await dialog.ShowMessage("Hello Universal Application", "it works...");
-                           }));
-            }
-        }
-
-        public string WelcomeTitle
-        {
-            get
-            {
-                return _welcomeTitle;
-            }
-
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
-        }
+        #region Constructors
 
         public MainViewModel(
             IDataService dataService,
@@ -118,47 +50,17 @@ namespace QuotesApp.ViewModel
             Initialize();
         }
 
-        public void RunClock()
-        {
-            _runClock = true;
-
-            Task.Run(async () =>
-            {
-                while (_runClock)
-                {
-                    try
-                    {
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            Clock = DateTime.Now.ToString("HH:mm:ss");
-                        });
-
-                        await Task.Delay(1000);
-                    }
-                    catch (Exception ex)
-                    {
-                    }
-                }
-            });
-        }
-
-        public void StopClock()
-        {
-            _runClock = false;
-        }
+        #endregion
 
         private async Task Initialize()
         {
             try
             {
                 var item = await _dataService.GetData();
-                _originalTitle = item.Title;
-                WelcomeTitle = item.Title;
             }
             catch (Exception ex)
             {
-                // Report error here
-                WelcomeTitle = ex.Message;
+                throw ex;
             }
         }
     }
