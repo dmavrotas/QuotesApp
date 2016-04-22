@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using QuotesApp.Model;
+using QuotesApp.Pages;
 
 namespace QuotesApp.ViewModel
 {
@@ -16,6 +17,10 @@ namespace QuotesApp.ViewModel
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
+        public SecondPageViewModel Second => ServiceLocator.Current.GetInstance<SecondPageViewModel>();
+
+        public const string SecondPageKey = "SecondPage";
+
         #endregion
 
         #region Constructors
@@ -25,6 +30,7 @@ namespace QuotesApp.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             var nav = new NavigationService();
+            nav.Configure(SecondPageKey, typeof(SecondPage));
             SimpleIoc.Default.Register<INavigationService>(() => nav);
 
             SimpleIoc.Default.Register<IDialogService, DialogService>();
