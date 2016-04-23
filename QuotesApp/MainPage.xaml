@@ -5,9 +5,15 @@
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Views="using:QuotesApp.Views"
+      xmlns:Converters="using:QuotesApp.Converters"
       x:Class="QuotesApp.MainPage"
       mc:Ignorable="d"
       DataContext="{Binding Main, Source={StaticResource Locator}}">
-
-    <Views:LoginView x:Name="LoginViewControl" />
+    <Page.Resources>
+        <Converters:BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Page.Resources>
+    <Views:LoginView x:Name="LoginViewControl" 
+                     DataContext="{Binding LoginViewModel}"
+                     Visibility="{Binding LoginViewVisibility, 
+                                    Converter={StaticResource BoolToVis}}"/>
 </Page>

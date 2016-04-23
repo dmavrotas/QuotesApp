@@ -45,6 +45,7 @@ namespace QuotesApp.ViewModel
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SecondPageViewModel>();
         }
 
         #endregion

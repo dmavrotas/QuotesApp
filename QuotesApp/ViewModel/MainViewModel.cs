@@ -7,10 +7,11 @@ using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using QuotesApp.Model;
+using System.ComponentModel;
 
 namespace QuotesApp.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, INotifyPropertyChanged
     {
         #region Members
 
@@ -20,7 +21,40 @@ namespace QuotesApp.ViewModel
         private RelayCommand<string> _navigateCommand;
         private RelayCommand _sendMessageCommand;
         private RelayCommand _showDialogCommand;
-        private string _welcomeTitle = string.Empty;
+        private LoginViewModel _loginViewModel;
+
+        public LoginViewModel LoginViewModel
+        {
+            get { return _loginViewModel; }
+            set
+            {
+                _loginViewModel = value;
+                NotifyPropertyChanged("LoginViewModel");
+            }
+        }
+
+        private bool _loginViewVisiblity;
+
+        public bool LoginViewVisibility
+        {
+            get { return _loginViewVisiblity; }
+            set
+            {
+                _loginViewVisiblity = value;
+                NotifyPropertyChanged("LoginViewVisibility");
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string info)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
 
         #endregion
 
@@ -30,10 +64,10 @@ namespace QuotesApp.ViewModel
         {
             get
             {
-                return _navigateCommand;
-                       //?? (_navigateCommand = new RelayCommand<string>(
-                       //    p => _navigationService.NavigateTo(ViewModelLocator.SecondPageKey, p),
-                       //    p => !string.IsNullOrEmpty(p)));
+                return _navigateCommand = 
+                        (_navigateCommand = new RelayCommand<string>(
+                           p => _navigationService.NavigateTo(ViewModelLocator.SecondPageKey, p),
+                           p => !string.IsNullOrEmpty(p)));
             }
         }
 
@@ -47,6 +81,7 @@ namespace QuotesApp.ViewModel
         {
             _dataService = dataService;
             _navigationService = navigationService;
+            InitializeProperties();
             Initialize();
         }
 
@@ -63,5 +98,21 @@ namespace QuotesApp.ViewModel
                 throw ex;
             }
         }
+
+        #region Events
+
+        private void InitializeProperties()
+        {
+            LoginViewModel = new LoginViewModel(_dataService, _navigationService);
+            LoginViewModel.NavigateToPageTriggered += loginViewModel_NavigateToPageTriggered;
+            LoginViewVisibility = true;
+        }
+
+        private void loginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
+        {
+            _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
+        }
+
+        #endregion
     }
 }
