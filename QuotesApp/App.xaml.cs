@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace QuotesApp
 {
@@ -75,6 +76,11 @@ namespace QuotesApp
         }
 
         #endregion
+
+        public static MobileServiceClient MobileService =
+                                    new MobileServiceClient(
+                                        "https://quotesazureapp.azurewebsites.net"
+                                    );
 
         #region Functions
 

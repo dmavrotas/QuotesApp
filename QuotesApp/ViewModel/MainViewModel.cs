@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using QuotesApp.Model;
 using System.ComponentModel;
+using QuotesApp.DatabaseClients;
 
 namespace QuotesApp.ViewModel
 {
@@ -92,6 +93,11 @@ namespace QuotesApp.ViewModel
             try
             {
                 var item = await _dataService.GetData();
+                var table = App.MobileService.GetTable<QuoteAppItem>();
+                var result = table.Select<QuoteAppItem>(x => new QuoteAppItem
+                {
+                    Id = x.Id, EMail = x.EMail, Password = x.Password, Highscore = x.Highscore
+                }).Where(x => x.Id == 2).ToListAsync();
             }
             catch (Exception ex)
             {
