@@ -10,6 +10,7 @@ using QuotesApp.Model;
 using System.ComponentModel;
 using QuotesApp.DatabaseClients;
 using Microsoft.WindowsAzure.MobileServices;
+using QuotesApp.IsolatedStorage;
 
 namespace QuotesApp.ViewModel
 {
@@ -88,9 +89,11 @@ namespace QuotesApp.ViewModel
 
         private async Task Initialize()
         {
+            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
+
             try
             {
-                var item = await _dataService.GetData();
+                //var item = await _dataService.GetData();
                 QuoteItems = await quoteItemsTable.ToCollectionAsync();
                 switch(LoginViewModel.LoginEnum)
                 {
@@ -106,20 +109,47 @@ namespace QuotesApp.ViewModel
             }
             catch (Exception ex)
             {
-                throw ex;
+                await dialog.ShowMessage(ex.Message, "Data Error");
             }
         }
 
         #region Events
 
+        private void LoginViewModel_SignUpTriggered(object sender, EventArgs e)
+        {
+            LoginViewModel.LoginEnum = LoginPageEnum.SignUp;
+            LoginViewModel.ButtonText = "SIGN UP";
+            LoginViewModel.SignUp = false;
+        }
+
+        private async void LoginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
+        {
+            switch (LoginViewModel.LoginEnum)
+            {
+                case LoginPageEnum.Login:
+                    PerformLoginActions();
+                    break;
+                case LoginPageEnum.SignUp:
+                    PerformSignUpActions();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Functions
+
         private void InitializeProperties()
         {
             LoginViewModel = new LoginViewModel(_dataService, _navigationService);
-            LoginViewModel.NavigateToPageTriggered += loginViewModel_NavigateToPageTriggered;
+            LoginViewModel.NavigateToPageTriggered += LoginViewModel_NavigateToPageTriggered;
+            LoginViewModel.SignUpTriggered += LoginViewModel_SignUpTriggered;
             LoginViewVisibility = true;
         }
 
-        private async void loginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
+        private async void PerformLoginActions()
         {
             var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
 
@@ -137,11 +167,14 @@ namespace QuotesApp.ViewModel
             }
             else
             {
+                #region Validate User
+
                 switch (ValidateUser())
                 {
                     case UserAuthenticationEnum.Success:
                         _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
                         LoginViewModel.LoginEnum = LoginPageEnum.Login;
+                        IsolatedStorageManager.SaveToIsolatedStorage(MakeStringParsable());
                         break;
                     case UserAuthenticationEnum.UserCredentialsWrong:
                         await dialog.ShowMessage("User password is wrong", "Login Error");
@@ -155,12 +188,38 @@ namespace QuotesApp.ViewModel
                     default:
                         break;
                 }
+
+                #endregion
             }
         }
 
-        #endregion
+        private async void PerformSignUpActions()
+        {
+            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        #region Functions
+            try
+            {
+                var signUpItem = new QuoteItem()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    EMail = LoginViewModel.Email,
+                    Password = LoginViewModel.Password,
+                    Highscore = 0
+                };
+                await quoteItemsTable.InsertAsync(signUpItem);
+                QuoteItems.Add(signUpItem);
+                _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
+            }
+            catch(Exception ex)
+            {
+                await dialog.ShowMessage(ex.Message, "Data Error");
+            }
+        }
+
+        private string MakeStringParsable()
+        {
+            return string.Format("{0};{1}", LoginViewModel.Email, LoginViewModel.Password);
+        }
 
         private UserAuthenticationEnum ValidateUser()
         {

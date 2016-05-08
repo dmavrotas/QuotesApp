@@ -5,6 +5,7 @@
     xmlns:local="using:QuotesApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:con="using:QuotesApp.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -326,10 +327,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <con:BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
     
     <Grid x:Name="BasicGrid" Background="#E8E6E8">
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -365,11 +368,24 @@
             <Button.Background>
                 <ImageBrush x:Name="StartButtonImage" ImageSource="/Assets/button.png"/>
             </Button.Background>
-            <Grid >
+            <Grid>
                 <TextBlock x:Name="StartButtonText" Text="{Binding Path=ButtonText, Mode=TwoWay}" 
                            VerticalAlignment="Top" Margin="30,-75,0,0" FontSize="20" 
                            Foreground="Black" HorizontalAlignment="Center"/>
             </Grid>
+        </Button>
+        <Button x:Name="SignUpButton" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"
+                Padding="0,0,0,0" HorizontalContentAlignment="Center"
+                Style="{StaticResource TransparentButton}" 
+                Visibility="{Binding Path=SignUp, Converter={StaticResource BoolToVis}}"
+                Command="{Binding Path=SignUpCommand}"
+                Background="Transparent">
+            <Button.Content>
+                <TextBlock x:Name="SignUpText" Text="Forgot to sign up ?" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="18" Foreground="Red"/>
+            </Button.Content>
         </Button>
     </Grid>
 </UserControl>

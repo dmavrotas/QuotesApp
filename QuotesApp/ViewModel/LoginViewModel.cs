@@ -32,6 +32,8 @@ namespace QuotesApp.ViewModel
 
         public event EventHandler NavigateToPageTriggered;
 
+        public event EventHandler SignUpTriggered;
+
         private string _buttonText;
 
         public string ButtonText
@@ -49,13 +51,45 @@ namespace QuotesApp.ViewModel
             NavigateToPageTriggered?.Invoke(this, new EventArgs());
         }
 
+        protected void TriggerSignUp()
+        {
+            SignUpTriggered?.Invoke(this, new EventArgs());
+        }
+
+        private bool _signUp;
+
+        public bool SignUp
+        {
+            get { return _signUp; }
+            set
+            {
+                _signUp = value;
+                NotifyPropertyChanged("SignUp");
+            }
+        }
+
         private RelayCommand _navigateCommand;
 
         public RelayCommand NavigateCommand
         {
-
-            set { _navigateCommand = new RelayCommand(InvokeNavigateEvent); }
+            set
+            {
+                _navigateCommand = new RelayCommand(InvokeNavigateEvent);
+                NotifyPropertyChanged("NavigateCommand");
+            }
             get { return _navigateCommand; }
+        }
+
+        private RelayCommand _signUpCommand;
+
+        public RelayCommand SignUpCommand
+        {
+            get { return _signUpCommand; }
+            set
+            {
+                _signUpCommand = new RelayCommand(InvokeSignUpEvent);
+                NotifyPropertyChanged("SignUpCommand");
+            }
         }
 
         private string _email;
@@ -102,7 +136,9 @@ namespace QuotesApp.ViewModel
             _dataService = dataService;
             _navigationService = navigationService;
             NavigateCommand = new RelayCommand(InvokeNavigateEvent);
+            SignUpCommand = new RelayCommand(InvokeSignUpEvent);
             LoginEnum = LoginPageEnum.Login;
+            SignUp = true;
         }
 
         #endregion
@@ -112,6 +148,11 @@ namespace QuotesApp.ViewModel
         private void InvokeNavigateEvent()
         {
             NavigateToPage();
+        }
+
+        private void InvokeSignUpEvent()
+        {
+            TriggerSignUp();
         }
 
         #endregion
