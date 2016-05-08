@@ -18,7 +18,11 @@ namespace QuotesApp.IsolatedStorage
 
             try
             {
-                folder = await ApplicationData.Current.LocalFolder.GetFolderAsync("LocalUserData");
+                var folders = await ApplicationData.Current.LocalFolder.GetFoldersAsync();
+                foreach(var f in folders)
+                {
+                    if (f.Name == "LocalUserData") folder = f;
+                }
             }
             catch(Exception ex)
             {
@@ -53,7 +57,11 @@ namespace QuotesApp.IsolatedStorage
 
             try
             {
-                folder = await ApplicationData.Current.LocalFolder.GetFolderAsync("LocalUserData");
+                var folders = await ApplicationData.Current.LocalFolder.GetFoldersAsync();
+                foreach (var f in folders)
+                {
+                    if (f.Name == "LocalUserData") folder = f;
+                }
             }
             catch (Exception ex)
             {

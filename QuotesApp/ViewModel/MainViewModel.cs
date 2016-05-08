@@ -22,6 +22,7 @@ namespace QuotesApp.ViewModel
         private readonly INavigationService _navigationService;
         private RelayCommand<string> _navigateCommand;
         private LoginViewModel _loginViewModel;
+        private int _userHighScore;
         private MobileServiceCollection<QuoteItem, QuoteItem> QuoteItems;
         private IMobileServiceTable<QuoteItem> quoteItemsTable = App.MobileService.GetTable<QuoteItem>();
 
@@ -83,6 +84,7 @@ namespace QuotesApp.ViewModel
             _navigationService = navigationService;
             InitializeProperties();
             LoginViewModel.ButtonText = "SIGN IN";
+            _userHighScore = 0;
             Initialize();
         }
 
@@ -150,11 +152,32 @@ namespace QuotesApp.ViewModel
                         break;
                 }
                 LoginViewModel.IsLoading = false;
+
+                if (await CheckIfUserExists())
+                {
+                    PerformLoginActions();
+                    return;
+                }
             }
             catch (Exception ex)
             {
                 await dialog.ShowMessage(ex.Message, "Data Error");
             }
+        }
+
+        private async Task<bool> CheckIfUserExists()
+        {
+            var userCredentials = await IsolatedStorageManager.LoadFromIsolatedStorage();
+            string[] cred = userCredentials.Split(';');
+
+            if(cred.Length == 3)
+            {
+                LoginViewModel.Email = cred[0];
+                LoginViewModel.Password = cred[1];
+                return true;
+            }
+
+            return false;
         }
 
         private void InitializeProperties()
@@ -224,6 +247,7 @@ namespace QuotesApp.ViewModel
                 };
                 await quoteItemsTable.InsertAsync(signUpItem);
                 QuoteItems.Add(signUpItem);
+                IsolatedStorageManager.SaveToIsolatedStorage(MakeStringParsable());
                 _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
             }
             catch(Exception ex)
@@ -234,7 +258,7 @@ namespace QuotesApp.ViewModel
 
         private string MakeStringParsable()
         {
-            return string.Format("{0};{1}", LoginViewModel.Email, LoginViewModel.Password);
+            return string.Format("{0};{1};{2}", LoginViewModel.Email, LoginViewModel.Password, _userHighScore);
         }
 
         private UserAuthenticationEnum ValidateUser()
@@ -242,7 +266,10 @@ namespace QuotesApp.ViewModel
             foreach(var user in QuoteItems)
             {
                 if (user.EMail.ToLower() == LoginViewModel.Email.ToLower() && user.Password.ToLower() == LoginViewModel.Password.ToLower())
+                {
+                    _userHighScore = user.Highscore;
                     return UserAuthenticationEnum.Success;
+                }
                 else if (user.EMail.ToLower() == LoginViewModel.Email.ToLower() && user.Password.ToLower() != LoginViewModel.Password.ToLower())
                     return UserAuthenticationEnum.UserCredentialsWrong;
             }

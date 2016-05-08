@@ -9,7 +9,17 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-        
+    <Grid x:Name="BasicGrid" Background="#E8E6E8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="TextImage" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+               Source="/Assets/text.png"/>
     </Grid>
 </UserControl>
