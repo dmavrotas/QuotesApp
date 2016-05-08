@@ -366,9 +366,9 @@
                 <ImageBrush x:Name="StartButtonImage" ImageSource="/Assets/button.png"/>
             </Button.Background>
             <Grid >
-                <TextBlock x:Name="StartButtonText" Text="SIGN IN" VerticalAlignment="Top" 
-                           Margin="30,-75,0,0" FontSize="20" Foreground="Black" 
-                           HorizontalAlignment="Center"/>
+                <TextBlock x:Name="StartButtonText" Text="{Binding Path=ButtonText, Mode=TwoWay}" 
+                           VerticalAlignment="Top" Margin="30,-75,0,0" FontSize="20" 
+                           Foreground="Black" HorizontalAlignment="Center"/>
             </Grid>
         </Button>
     </Grid>

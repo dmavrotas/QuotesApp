@@ -17,7 +17,32 @@ namespace QuotesApp.ViewModel
 
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
+
+        private LoginPageEnum _loginEnum;
+
+        public LoginPageEnum LoginEnum
+        {
+            get { return _loginEnum; }
+            set
+            {
+                _loginEnum = value;
+                NotifyPropertyChanged("LoginEnum");
+            }
+        }
+
         public event EventHandler NavigateToPageTriggered;
+
+        private string _buttonText;
+
+        public string ButtonText
+        {
+            get { return _buttonText; }
+            set
+            {
+                _buttonText = value;
+                NotifyPropertyChanged("ButtonText");
+            }
+        }
 
         protected virtual void NavigateToPage()
         {
@@ -77,6 +102,7 @@ namespace QuotesApp.ViewModel
             _dataService = dataService;
             _navigationService = navigationService;
             NavigateCommand = new RelayCommand(InvokeNavigateEvent);
+            LoginEnum = LoginPageEnum.Login;
         }
 
         #endregion

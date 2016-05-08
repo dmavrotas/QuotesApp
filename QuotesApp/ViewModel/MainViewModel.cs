@@ -21,7 +21,6 @@ namespace QuotesApp.ViewModel
         private readonly INavigationService _navigationService;
         private RelayCommand<string> _navigateCommand;
         private LoginViewModel _loginViewModel;
-
         private MobileServiceCollection<QuoteItem, QuoteItem> QuoteItems;
         private IMobileServiceTable<QuoteItem> quoteItemsTable = App.MobileService.GetTable<QuoteItem>();
 
@@ -77,9 +76,7 @@ namespace QuotesApp.ViewModel
 
         #region Constructors
 
-        public MainViewModel(
-            IDataService dataService,
-            INavigationService navigationService)
+        public MainViewModel(IDataService dataService, INavigationService navigationService)
         {
             _dataService = dataService;
             _navigationService = navigationService;
@@ -95,6 +92,17 @@ namespace QuotesApp.ViewModel
             {
                 var item = await _dataService.GetData();
                 QuoteItems = await quoteItemsTable.ToCollectionAsync();
+                switch(LoginViewModel.LoginEnum)
+                {
+                    case LoginPageEnum.Login:
+                        LoginViewModel.ButtonText = "SIGN IN";
+                        break;
+                    case LoginPageEnum.SignUp:
+                        LoginViewModel.ButtonText = "SIGN UP";
+                        break;
+                    default:
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -133,13 +141,16 @@ namespace QuotesApp.ViewModel
                 {
                     case UserAuthenticationEnum.Success:
                         _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
+                        LoginViewModel.LoginEnum = LoginPageEnum.Login;
                         break;
                     case UserAuthenticationEnum.UserCredentialsWrong:
                         await dialog.ShowMessage("User password is wrong", "Login Error");
+                        LoginViewModel.LoginEnum = LoginPageEnum.Login;
                         break;
                     case UserAuthenticationEnum.UserNotFound:
                         dialog = ServiceLocator.Current.GetInstance<IDialogService>();
                         await dialog.ShowMessage("User does not exist", "Login Error");
+                        LoginViewModel.LoginEnum = LoginPageEnum.SignUp;
                         break;
                     default:
                         break;
