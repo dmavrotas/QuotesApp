@@ -9,6 +9,7 @@ using Microsoft.Practices.ServiceLocation;
 using QuotesApp.Model;
 using System.ComponentModel;
 using QuotesApp.DatabaseClients;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace QuotesApp.ViewModel
 {
@@ -23,6 +24,9 @@ namespace QuotesApp.ViewModel
         private RelayCommand _sendMessageCommand;
         private RelayCommand _showDialogCommand;
         private LoginViewModel _loginViewModel;
+
+        private MobileServiceCollection<QuoteItem, QuoteItem> QuoteItems;
+        private IMobileServiceTable<QuoteItem> quoteItemsTable = App.MobileService.GetTable<QuoteItem>();
 
         public LoginViewModel LoginViewModel
         {
@@ -93,11 +97,7 @@ namespace QuotesApp.ViewModel
             try
             {
                 var item = await _dataService.GetData();
-                var table = App.MobileService.GetTable<QuoteAppItem>();
-                var result = table.Select<QuoteAppItem>(x => new QuoteAppItem
-                {
-                    Id = x.Id, EMail = x.EMail, Password = x.Password, Highscore = x.Highscore
-                }).Where(x => x.Id == 2).ToListAsync();
+                QuoteItems = await quoteItemsTable.ToCollectionAsync();
             }
             catch (Exception ex)
             {

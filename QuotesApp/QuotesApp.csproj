@@ -97,7 +97,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="DatabaseClients\QuoteAppItem.cs" />
+    <Compile Include="DatabaseClients\QuoteItem.cs" />
     <Compile Include="DatabaseClients\DatabaseClient.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="MainPage.xaml.cs">

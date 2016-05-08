@@ -77,10 +77,7 @@ namespace QuotesApp
 
         #endregion
 
-        public static MobileServiceClient MobileService =
-                                    new MobileServiceClient(
-                                        "https://quotesazureapp.azurewebsites.net"
-                                    );
+        public static MobileServiceClient MobileService = new MobileServiceClient("https://quotesservice.azurewebsites.net");
 
         #region Functions
 
