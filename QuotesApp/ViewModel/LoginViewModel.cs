@@ -33,6 +33,30 @@ namespace QuotesApp.ViewModel
             get { return _navigateCommand; }
         }
 
+        private string _email;
+
+        public string Email
+        {
+            get { return _email; }
+            set
+            {
+                _email = value;
+                NotifyPropertyChanged("Email");
+            }
+        }
+
+        private string _password;
+
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = value;
+                NotifyPropertyChanged("Password");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members

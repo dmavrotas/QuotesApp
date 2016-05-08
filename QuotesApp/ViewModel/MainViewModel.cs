@@ -19,10 +19,7 @@ namespace QuotesApp.ViewModel
 
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
-        private RelayCommand _incrementCommand;
         private RelayCommand<string> _navigateCommand;
-        private RelayCommand _sendMessageCommand;
-        private RelayCommand _showDialogCommand;
         private LoginViewModel _loginViewModel;
 
         private MobileServiceCollection<QuoteItem, QuoteItem> QuoteItems;
@@ -114,9 +111,55 @@ namespace QuotesApp.ViewModel
             LoginViewVisibility = true;
         }
 
-        private void loginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
+        private async void loginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
         {
-            _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
+            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
+
+            if ((string.IsNullOrEmpty(LoginViewModel.Email)) && (string.IsNullOrEmpty(LoginViewModel.Password)))
+            {
+                await dialog.ShowMessage("Please complete the fields before pressing Sign In", "Login Error");
+            }
+            else if ((string.IsNullOrEmpty(LoginViewModel.Email)))
+            {
+                await dialog.ShowMessage("Please complete the email field before pressing Sign In", "Login Error");
+            }
+            else if ((string.IsNullOrEmpty(LoginViewModel.Password)))
+            {
+                await dialog.ShowMessage("Please complete the password field before pressing Sign In", "Login Error");
+            }
+            else
+            {
+                switch (ValidateUser())
+                {
+                    case UserAuthenticationEnum.Success:
+                        _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
+                        break;
+                    case UserAuthenticationEnum.UserCredentialsWrong:
+                        await dialog.ShowMessage("User password is wrong", "Login Error");
+                        break;
+                    case UserAuthenticationEnum.UserNotFound:
+                        dialog = ServiceLocator.Current.GetInstance<IDialogService>();
+                        await dialog.ShowMessage("User does not exist", "Login Error");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Functions
+
+        private UserAuthenticationEnum ValidateUser()
+        {
+            foreach(var user in QuoteItems)
+            {
+                if (user.EMail == LoginViewModel.Email && user.Password == LoginViewModel.Password) return UserAuthenticationEnum.Success;
+                else if (user.EMail == LoginViewModel.Email && user.Password != LoginViewModel.Password) return UserAuthenticationEnum.UserCredentialsWrong;
+            }
+
+            return UserAuthenticationEnum.UserNotFound;
         }
 
         #endregion

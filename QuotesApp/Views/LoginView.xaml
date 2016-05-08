@@ -346,14 +346,16 @@
         <TextBox x:Name="EMailTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                  VerticalAlignment="Center" Margin="0,-30,0,0" Background="Transparent"
                  BorderBrush="Transparent" BorderThickness="0" FontSize="16" 
-                 TextAlignment="Left" HorizontalAlignment="Center" Width="280"/>
+                 TextAlignment="Left" HorizontalAlignment="Center" Width="280"
+                 Text="{Binding Path=Email, Mode=TwoWay}"/>
         <Image x:Name="PasswordBackground" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                Source="/Assets/field.png" VerticalAlignment="Center" Margin="-20,0,0,0"/>
         <PasswordBox x:Name="PasswordTextBox" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-30,0,0" 
                  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" 
                  FontSize="20" PasswordChar="*" PasswordRevealMode="Peek" Width="280"
-                 Style="{StaticResource PasswordBoxStyle}" HorizontalContentAlignment="Center" />
+                 Style="{StaticResource PasswordBoxStyle}" HorizontalContentAlignment="Center"
+                 Password="{Binding Path=Password, Mode=TwoWay}"/>
         <Button x:Name="StartButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                 VerticalAlignment="Center" HorizontalAlignment="Center"  
                 Style="{StaticResource TransparentButton}" Margin="0,0,20,0"
