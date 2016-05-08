@@ -82,47 +82,36 @@ namespace QuotesApp.ViewModel
             _dataService = dataService;
             _navigationService = navigationService;
             InitializeProperties();
+            LoginViewModel.ButtonText = "SIGN IN";
             Initialize();
         }
 
         #endregion
 
-        private async Task Initialize()
-        {
-            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
-
-            try
-            {
-                //var item = await _dataService.GetData();
-                QuoteItems = await quoteItemsTable.ToCollectionAsync();
-                switch(LoginViewModel.LoginEnum)
-                {
-                    case LoginPageEnum.Login:
-                        LoginViewModel.ButtonText = "SIGN IN";
-                        break;
-                    case LoginPageEnum.SignUp:
-                        LoginViewModel.ButtonText = "SIGN UP";
-                        break;
-                    default:
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                await dialog.ShowMessage(ex.Message, "Data Error");
-            }
-        }
-
         #region Events
 
         private void LoginViewModel_SignUpTriggered(object sender, EventArgs e)
         {
-            LoginViewModel.LoginEnum = LoginPageEnum.SignUp;
-            LoginViewModel.ButtonText = "SIGN UP";
-            LoginViewModel.SignUp = false;
+            switch(LoginViewModel.LoginEnum)
+            {
+                case LoginPageEnum.Login:
+                    LoginViewModel.LoginEnum = LoginPageEnum.SignUp;
+                    LoginViewModel.ButtonText = "SIGN UP";
+                    LoginViewModel.LoginText = "Sign in instead";
+                    //LoginViewModel.SignUp = false;
+                    break;
+                case LoginPageEnum.SignUp:
+                    LoginViewModel.LoginEnum = LoginPageEnum.Login;
+                    LoginViewModel.ButtonText = "SIGN IN";
+                    LoginViewModel.LoginText = "Forgot to sign up ?";
+                    //LoginViewModel.SignUp = false;
+                    break;
+                default:
+                    break;
+            }
         }
 
-        private async void LoginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
+        private void LoginViewModel_NavigateToPageTriggered(object sender, EventArgs e)
         {
             switch (LoginViewModel.LoginEnum)
             {
@@ -140,6 +129,33 @@ namespace QuotesApp.ViewModel
         #endregion
 
         #region Functions
+
+        private async Task Initialize()
+        {
+            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
+
+            try
+            {
+                //var item = await _dataService.GetData();
+                QuoteItems = await quoteItemsTable.ToCollectionAsync();
+                switch (LoginViewModel.LoginEnum)
+                {
+                    case LoginPageEnum.Login:
+                        LoginViewModel.ButtonText = "SIGN IN";
+                        break;
+                    case LoginPageEnum.SignUp:
+                        LoginViewModel.ButtonText = "SIGN UP";
+                        break;
+                    default:
+                        break;
+                }
+                LoginViewModel.IsLoading = false;
+            }
+            catch (Exception ex)
+            {
+                await dialog.ShowMessage(ex.Message, "Data Error");
+            }
+        }
 
         private void InitializeProperties()
         {
@@ -177,12 +193,12 @@ namespace QuotesApp.ViewModel
                         IsolatedStorageManager.SaveToIsolatedStorage(MakeStringParsable());
                         break;
                     case UserAuthenticationEnum.UserCredentialsWrong:
-                        await dialog.ShowMessage("User password is wrong", "Login Error");
+                        await dialog.ShowMessage("The user password is wrong", "Login Error");
                         LoginViewModel.LoginEnum = LoginPageEnum.Login;
                         break;
                     case UserAuthenticationEnum.UserNotFound:
                         dialog = ServiceLocator.Current.GetInstance<IDialogService>();
-                        await dialog.ShowMessage("User does not exist", "Login Error");
+                        await dialog.ShowMessage("This user does not exist", "Login Error");
                         LoginViewModel.LoginEnum = LoginPageEnum.SignUp;
                         break;
                     default:
@@ -225,8 +241,10 @@ namespace QuotesApp.ViewModel
         {
             foreach(var user in QuoteItems)
             {
-                if (user.EMail == LoginViewModel.Email && user.Password == LoginViewModel.Password) return UserAuthenticationEnum.Success;
-                else if (user.EMail == LoginViewModel.Email && user.Password != LoginViewModel.Password) return UserAuthenticationEnum.UserCredentialsWrong;
+                if (user.EMail.ToLower() == LoginViewModel.Email.ToLower() && user.Password.ToLower() == LoginViewModel.Password.ToLower())
+                    return UserAuthenticationEnum.Success;
+                else if (user.EMail.ToLower() == LoginViewModel.Email.ToLower() && user.Password.ToLower() != LoginViewModel.Password.ToLower())
+                    return UserAuthenticationEnum.UserCredentialsWrong;
             }
 
             return UserAuthenticationEnum.UserNotFound;

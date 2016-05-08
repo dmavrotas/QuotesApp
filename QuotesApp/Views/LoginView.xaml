@@ -342,6 +342,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <!--<ProgressRing IsActive="{Binding Path=IsLoading, Mode=TwoWay}" Grid.ColumnSpan="2" Grid.RowSpan="5"/>-->
         <Image x:Name="LogoImage" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
                Source="/Assets/logo.png"/>
         <Image x:Name="EMailBackground" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
@@ -382,7 +383,7 @@
                 Command="{Binding Path=SignUpCommand}"
                 Background="Transparent">
             <Button.Content>
-                <TextBlock x:Name="SignUpText" Text="Forgot to sign up ?" 
+                <TextBlock x:Name="SignUpText" Text="{Binding Path=LoginText, Mode=TwoWay}" 
                            HorizontalAlignment="Center" VerticalAlignment="Center"
                            FontSize="18" Foreground="Red"/>
             </Button.Content>

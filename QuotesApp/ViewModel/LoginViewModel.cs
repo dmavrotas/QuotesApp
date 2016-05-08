@@ -68,6 +68,18 @@ namespace QuotesApp.ViewModel
             }
         }
 
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                NotifyPropertyChanged("IsLoading");
+            }
+        }
+
         private RelayCommand _navigateCommand;
 
         public RelayCommand NavigateCommand
@@ -89,6 +101,18 @@ namespace QuotesApp.ViewModel
             {
                 _signUpCommand = new RelayCommand(InvokeSignUpEvent);
                 NotifyPropertyChanged("SignUpCommand");
+            }
+        }
+
+        private string _loginText;
+
+        public string LoginText
+        {
+            get { return _loginText; }
+            set
+            {
+                _loginText = value;
+                NotifyPropertyChanged("LoginText");
             }
         }
 
@@ -139,6 +163,8 @@ namespace QuotesApp.ViewModel
             SignUpCommand = new RelayCommand(InvokeSignUpEvent);
             LoginEnum = LoginPageEnum.Login;
             SignUp = true;
+            IsLoading = true;
+            LoginText = "Forgot to sign up ?";
         }
 
         #endregion

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace QuotesApp.ViewModel
 {
-    public class SecondPageViewModel : ViewModelBase, INotifyPropertyChanged
+    public class GameViewModel : ViewModelBase, INotifyPropertyChanged
     {
         #region Members
 
@@ -33,7 +33,7 @@ namespace QuotesApp.ViewModel
 
         #region Constructors
 
-        public SecondPageViewModel(IDataService dataService, INavigationService navigationService)
+        public GameViewModel(IDataService dataService, INavigationService navigationService)
         {
             _dataService = dataService;
             _navigationService = navigationService;
