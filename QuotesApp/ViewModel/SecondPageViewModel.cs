@@ -18,6 +18,18 @@ namespace QuotesApp.ViewModel
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
 
+        private GameViewModel _gameViewModel;
+
+        public GameViewModel GameViewModel
+        {
+            get { return _gameViewModel; }
+            set
+            {
+                _gameViewModel = value;
+                NotifyPropertyChanged("GameViewModel");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -37,6 +49,7 @@ namespace QuotesApp.ViewModel
         {
             _dataService = dataService;
             _navigationService = navigationService;
+            InitializeProperties();
             Initialize();
         }
 
@@ -50,13 +63,18 @@ namespace QuotesApp.ViewModel
 
         #region Functions
 
+        private void InitializeProperties()
+        {
+            GameViewModel = new GameViewModel(_dataService, _navigationService);
+        }
+
         private async Task Initialize()
         {
             var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
 
             try
             {
-                var item = await _dataService.GetData();
+                GameViewModel.Item = await _dataService.GetData();
             }
             catch (Exception ex)
             {

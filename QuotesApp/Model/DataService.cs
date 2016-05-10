@@ -24,7 +24,12 @@ namespace QuotesApp.Model
             try
             {
                 var final = await msg.Content.ReadAsStringAsync();
-                var temp = JsonConvert.DeserializeObject<DataItem[]>(final);
+                JsonSerializerSettings settings = new JsonSerializerSettings()
+                {
+                    StringEscapeHandling = StringEscapeHandling.Default
+                };
+
+                var temp = JsonConvert.DeserializeObject<DataItem[]>(final, settings);
 
                 if (temp == null) return null;
                 if (!(temp is DataItem[])) return null;

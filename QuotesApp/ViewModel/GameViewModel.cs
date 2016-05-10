@@ -18,6 +18,18 @@ namespace QuotesApp.ViewModel
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
 
+        private DataItem _item;
+
+        public DataItem Item
+        {
+            get { return _item; }
+            set
+            {
+                _item = value;
+                NotifyPropertyChanged("Item");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -37,7 +49,6 @@ namespace QuotesApp.ViewModel
         {
             _dataService = dataService;
             _navigationService = navigationService;
-            Initialize();
         }
 
         #endregion
@@ -50,19 +61,7 @@ namespace QuotesApp.ViewModel
 
         #region Functions
 
-        private async Task Initialize()
-        {
-            var dialog = ServiceLocator.Current.GetInstance<IDialogService>();
-
-            try
-            {
-                var item = await _dataService.GetData();
-            }
-            catch (Exception ex)
-            {
-                await dialog.ShowMessage(ex.Message, "Data Error");
-            }
-        }
+        
 
         #endregion
     }

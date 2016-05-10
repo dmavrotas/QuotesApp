@@ -21,10 +21,11 @@ namespace QuotesApp.ViewModel
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
         private RelayCommand<string> _navigateCommand;
-        private LoginViewModel _loginViewModel;
         private int _userHighScore;
         private MobileServiceCollection<QuoteItem, QuoteItem> QuoteItems;
         private IMobileServiceTable<QuoteItem> quoteItemsTable = App.MobileService.GetTable<QuoteItem>();
+
+        private LoginViewModel _loginViewModel;
 
         public LoginViewModel LoginViewModel
         {
@@ -168,7 +169,11 @@ namespace QuotesApp.ViewModel
         private async Task<bool> CheckIfUserExists()
         {
             var userCredentials = await IsolatedStorageManager.LoadFromIsolatedStorage();
+            if (userCredentials == null) return false;
+
             string[] cred = userCredentials.Split(';');
+
+            if (cred == null) return false;
 
             if(cred.Length == 3)
             {

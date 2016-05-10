@@ -9,5 +9,5 @@
     xmlns:Views="using:QuotesApp.Views"
     DataContext="{Binding Second, Source={StaticResource Locator}}">
 
-    <Views:GameView x:Name="GameViewControl"/>
+    <Views:GameView x:Name="GameViewControl" DataContext="{Binding GameViewModel}"/>
 </Page>
