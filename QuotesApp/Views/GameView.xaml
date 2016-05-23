@@ -21,7 +21,7 @@
         </Grid.ColumnDefinitions>
         <Image x:Name="TextImage" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                Source="/Assets/text.png" HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
+               VerticalAlignment="Center" Margin="0,0,0,0" Stretch="Fill"/>
         <TextBlock x:Name="QuestionText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                    Padding="0,50,10,10" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="{Binding Path=Item.Content, Mode=TwoWay, FallbackValue=WhySoSerious}" 
