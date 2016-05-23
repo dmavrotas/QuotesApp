@@ -268,6 +268,10 @@ namespace QuotesApp.ViewModel
 
         private UserAuthenticationEnum ValidateUser()
         {
+            if (QuoteItems == null) return UserAuthenticationEnum.UserNotFound;
+
+            if (QuoteItems.Count == 0) return UserAuthenticationEnum.UserNotFound;
+
             foreach(var user in QuoteItems)
             {
                 if (user.EMail.ToLower() == LoginViewModel.Email.ToLower() && user.Password.ToLower() == LoginViewModel.Password.ToLower())
