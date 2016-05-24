@@ -11,6 +11,7 @@
 
     <Grid x:Name="BasicGrid" Background="#E8E6E8">
         <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -24,7 +25,43 @@
                VerticalAlignment="Center" Margin="0,0,0,0" Stretch="Fill"/>
         <TextBlock x:Name="QuestionText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                    Padding="0,50,10,10" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="{Binding Path=Item.Content, Mode=TwoWay, FallbackValue=WhySoSerious}" 
+                   Text="{Binding Path=Item.Content, Mode=TwoWay}" 
                    TextWrapping="Wrap" Foreground="Black" TextAlignment="Center" FontSize="15"/>
+        <Button x:Name="Answer1" Grid.Row="1" Grid.ColumnSpan="2" Padding="100,100,100,0"
+                Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress}"
+                CommandParameter="Answer1">
+            <Button.Background>
+                <ImageBrush ImageSource="\Assets\Button.png" Stretch="Fill" 
+                            AlignmentX="Center" AlignmentY="Center"/>
+            </Button.Background>
+            <Button.Content>
+                <TextBlock Text="{Binding Path=Answers[0]}" VerticalAlignment="Top" 
+                           Margin="30,-75,0,0" FontSize="20"/>
+            </Button.Content>
+        </Button>
+        <Button x:Name="Answer2" Grid.Row="2" Grid.ColumnSpan="2" Padding="100,100,100,0"
+                Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress}"
+                CommandParameter="Answer2">
+            <Button.Background>
+                <ImageBrush ImageSource="\Assets\Button.png" Stretch="Fill" 
+                            AlignmentX="Center" AlignmentY="Center"/>
+            </Button.Background>
+            <Button.Content>
+                <TextBlock Text="{Binding Path=Answers[1]}" VerticalAlignment="Top" 
+                           Margin="30,-75,0,0" FontSize="20"/>
+            </Button.Content>
+        </Button>
+        <Button x:Name="Answer3" Grid.Row="3" Grid.ColumnSpan="2" Padding="100,100,100,0"
+                Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress}"
+                CommandParameter="Answer3">
+            <Button.Background>
+                <ImageBrush ImageSource="\Assets\Button.png" Stretch="Fill" 
+                            AlignmentX="Center" AlignmentY="Center"/>
+            </Button.Background>
+            <Button.Content>
+                <TextBlock Text="{Binding Path=Answers[2]}" VerticalAlignment="Top" 
+                           Margin="30,-75,0,0" FontSize="20"/>
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>

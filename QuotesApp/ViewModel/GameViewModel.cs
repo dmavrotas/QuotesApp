@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using QuotesApp.Model;
@@ -30,6 +31,49 @@ namespace QuotesApp.ViewModel
             }
         }
 
+        private bool _answer;
+
+        public bool Answer
+        {
+            get { return _answer; }
+            set
+            {
+                _answer = value;
+                NotifyPropertyChanged("Answer");
+            }
+        }
+
+        private RelayCommand<string> _answerPressed;
+
+        public RelayCommand<string> AnswerPress
+        {
+            get { return _answerPressed; }
+            set
+            {
+                _answerPressed = new RelayCommand<string>(AnswerPressedEvent);
+                NotifyPropertyChanged("AnswerPress");
+            }
+        }
+
+        public event EventHandler<bool> AnswerGiven;
+
+        private void AnswerGivenTrigger()
+        {
+            AnswerGiven?.Invoke(this, Answer);
+        }
+
+        private List<string> _answers;
+
+        public List<string> Answers
+        {
+            get { return _answers; }
+            set
+            {
+                _answers = new List<string>();
+                NotifyPropertyChanged("Answers");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -49,6 +93,7 @@ namespace QuotesApp.ViewModel
         {
             _dataService = dataService;
             _navigationService = navigationService;
+            _answerPressed = new RelayCommand<string>(AnswerPressedEvent);
         }
 
         #endregion
@@ -61,7 +106,23 @@ namespace QuotesApp.ViewModel
 
         #region Functions
 
-        
+        private void AnswerPressedEvent(string answer)
+        {
+            if(answer == "Answer1")
+            {
+                Answer = Answers[0] == Item.Title;
+            }
+            else if(answer == "Answer2")
+            {
+                Answer = Answers[1] == Item.Title;
+            }
+            else if(answer == "Answer3")
+            {
+                Answer = Answers[2] == Item.Title;
+            }
+
+            AnswerGivenTrigger();
+        }
 
         #endregion
     }

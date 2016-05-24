@@ -69,6 +69,10 @@ namespace QuotesApp.ViewModel
 
         #region Events
 
+        private void GameViewModel_AnswerGiven(object sender, bool e)
+        {
+            
+        }
 
 
         #endregion
@@ -78,6 +82,7 @@ namespace QuotesApp.ViewModel
         private void InitializeProperties()
         {
             GameViewModel = new GameViewModel(_dataService, _navigationService);
+            GameViewModel.AnswerGiven += GameViewModel_AnswerGiven;
             Answers = new List<string>();
         }
 
@@ -105,6 +110,7 @@ namespace QuotesApp.ViewModel
                 }
 
                 Shuffle(Answers);
+                GameViewModel.Answers = Answers;
             }
             catch (Exception ex)
             {

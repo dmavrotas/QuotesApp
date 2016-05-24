@@ -139,7 +139,6 @@ namespace QuotesApp.ViewModel
 
             try
             {
-                //var item = await _dataService.GetData();
                 QuoteItems = await quoteItemsTable.ToCollectionAsync();
                 switch (LoginViewModel.LoginEnum)
                 {
