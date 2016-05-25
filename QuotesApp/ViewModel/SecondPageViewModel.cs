@@ -42,6 +42,30 @@ namespace QuotesApp.ViewModel
             }
         }
 
+        private int _score;
+
+        public int Score
+        {
+            get { return _score; }
+            set
+            {
+                _score = value;
+                NotifyPropertyChanged("Score");
+            }
+        }
+
+        private int _highScore;
+
+        public int HighScore
+        {
+            get { return _highScore; }
+            set
+            {
+                _highScore = value;
+                NotifyPropertyChanged("HighScore");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -84,6 +108,7 @@ namespace QuotesApp.ViewModel
             GameViewModel = new GameViewModel(_dataService, _navigationService);
             GameViewModel.AnswerGiven += GameViewModel_AnswerGiven;
             Answers = new List<string>();
+            Score = 0;
         }
 
         private async Task Initialize()

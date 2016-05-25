@@ -69,7 +69,7 @@ namespace QuotesApp.ViewModel
             get { return _answers; }
             set
             {
-                _answers = new List<string>();
+                _answers = value;
                 NotifyPropertyChanged("Answers");
             }
         }
@@ -94,6 +94,7 @@ namespace QuotesApp.ViewModel
             _dataService = dataService;
             _navigationService = navigationService;
             _answerPressed = new RelayCommand<string>(AnswerPressedEvent);
+            Answers = new List<string>();
         }
 
         #endregion

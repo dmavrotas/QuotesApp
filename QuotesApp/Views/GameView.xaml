@@ -31,7 +31,7 @@
                 Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress}"
                 CommandParameter="Answer1">
             <Button.Background>
-                <ImageBrush ImageSource="\Assets\Button.png" Stretch="Fill" 
+                <ImageBrush ImageSource="/Assets/Button.png" Stretch="Fill" 
                             AlignmentX="Center" AlignmentY="Center"/>
             </Button.Background>
             <Button.Content>
@@ -43,7 +43,7 @@
                 Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress}"
                 CommandParameter="Answer2">
             <Button.Background>
-                <ImageBrush ImageSource="\Assets\Button.png" Stretch="Fill" 
+                <ImageBrush ImageSource="/Assets/Button.png" Stretch="Fill" 
                             AlignmentX="Center" AlignmentY="Center"/>
             </Button.Background>
             <Button.Content>
@@ -55,7 +55,7 @@
                 Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress}"
                 CommandParameter="Answer3">
             <Button.Background>
-                <ImageBrush ImageSource="\Assets\Button.png" Stretch="Fill" 
+                <ImageBrush ImageSource="/Assets/Button.png" Stretch="Fill" 
                             AlignmentX="Center" AlignmentY="Center"/>
             </Button.Background>
             <Button.Content>
