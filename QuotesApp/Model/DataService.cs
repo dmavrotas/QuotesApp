@@ -68,7 +68,7 @@ namespace QuotesApp.Model
                 var final = await msg.Content.ReadAsStringAsync();
                 JsonSerializerSettings settings = new JsonSerializerSettings()
                 {
-                    StringEscapeHandling = StringEscapeHandling.Default
+                    StringEscapeHandling = StringEscapeHandling.EscapeHtml
                 };
 
                 var temp = JsonConvert.DeserializeObject<DataItem[]>(final, settings);

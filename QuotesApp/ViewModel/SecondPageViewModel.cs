@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
+using QuotesApp.IsolatedStorage;
 using QuotesApp.Model;
 using System;
 using System.Collections.Generic;
@@ -95,7 +96,14 @@ namespace QuotesApp.ViewModel
 
         private void GameViewModel_AnswerGiven(object sender, bool e)
         {
-            
+            if(e)
+            {
+                Score++;
+            }
+            else
+            {
+
+            }
         }
 
 
@@ -118,6 +126,7 @@ namespace QuotesApp.ViewModel
             try
             {
                 GameViewModel.Item = await _dataService.GetData();
+                GetHighScore();
                 ManipulateBindingItems();
 
                 var wrongAnswers = await _dataService.GetWrongAnswersData();
@@ -140,6 +149,22 @@ namespace QuotesApp.ViewModel
             catch (Exception ex)
             {
                 await dialog.ShowMessage(ex.Message, "Data Error");
+            }
+        }
+
+        private async void GetHighScore()
+        {
+            var userCredentials = await IsolatedStorageManager.LoadFromIsolatedStorage();
+            if (userCredentials == null) return;
+
+            string[] cred = userCredentials.Split(';');
+
+            if (cred == null) return;
+
+            if (cred.Length == 3)
+            {
+                HighScore = Convert.ToInt32(cred[2]);
+                return;
             }
         }
 

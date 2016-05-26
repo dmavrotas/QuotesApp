@@ -9,5 +9,26 @@
     xmlns:Views="using:QuotesApp.Views"
     DataContext="{Binding Second, Source={StaticResource Locator}}">
 
-    <Views:GameView x:Name="GameViewControl" DataContext="{Binding GameViewModel}"/>
+    <Grid x:Name="MainRoot" Background="#E8E6E8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Views:GameView x:Name="GameViewControl" Grid.Row="0" DataContext="{Binding GameViewModel}"
+                        Grid.Column="0" Grid.ColumnSpan="4"/>
+        <TextBlock x:Name="CurrentScoreText" Text="Score :" Grid.Row="1" Foreground="Black"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" />
+        <TextBlock x:Name="CurrentScore" Text="{Binding Path=Score}" Grid.Row="1" Foreground="Black"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" />
+        <TextBlock x:Name="HighScoreText" Text="HighScore :" Grid.Row="1" Foreground="Black"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" />
+        <TextBlock x:Name="HighScore" Text="{Binding Path=HighScore}" Grid.Row="1" Foreground="Black"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3" />
+    </Grid>
 </Page>

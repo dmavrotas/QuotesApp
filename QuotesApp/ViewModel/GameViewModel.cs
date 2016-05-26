@@ -99,12 +99,6 @@ namespace QuotesApp.ViewModel
 
         #endregion
 
-        #region Events
-
-
-
-        #endregion
-
         #region Functions
 
         private void AnswerPressedEvent(string answer)
