@@ -140,6 +140,18 @@ namespace QuotesApp.ViewModel
             }
         }
 
+        private Guid _userID;
+
+        public Guid UserID
+        {
+            get { return _userID; }
+            set
+            {
+                _userID = value;
+                NotifyPropertyChanged("UserID");
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members

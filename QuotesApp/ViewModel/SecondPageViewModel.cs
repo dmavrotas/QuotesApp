@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.WindowsAzure.MobileServices;
+using QuotesApp.DatabaseClients;
 using QuotesApp.IsolatedStorage;
 using QuotesApp.Model;
 using System;
@@ -18,6 +20,7 @@ namespace QuotesApp.ViewModel
 
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
+        private IMobileServiceTable<QuoteItem> quoteItemsTable = App.MobileService.GetTable<QuoteItem>();
 
         private GameViewModel _gameViewModel;
 
@@ -94,7 +97,7 @@ namespace QuotesApp.ViewModel
 
         #region Events
 
-        private void GameViewModel_AnswerGiven(object sender, bool e)
+        private async void GameViewModel_AnswerGiven(object sender, bool e)
         {
             if(e)
             {
@@ -102,8 +105,31 @@ namespace QuotesApp.ViewModel
             }
             else
             {
+                if(Score > HighScore)
+                {
+                    var userCredentials = await IsolatedStorageManager.LoadFromIsolatedStorage();
+                    if (userCredentials == null) return;
 
+                    string[] cred = userCredentials.Split(';');
+
+                    if (cred == null) return;
+
+                    if (cred.Length != 4) return;
+
+                    var signUpItem = new QuoteItem()
+                    {
+                        Id = cred[0],
+                        EMail = cred[1],
+                        Password = cred[2],
+                        Highscore = Score
+                    };
+                    await quoteItemsTable.UpdateAsync(signUpItem);
+
+                    HighScore = Score;
+                }
             }
+
+            await Initialize();
         }
 
 
@@ -161,9 +187,9 @@ namespace QuotesApp.ViewModel
 
             if (cred == null) return;
 
-            if (cred.Length == 3)
+            if (cred.Length == 4)
             {
-                HighScore = Convert.ToInt32(cred[2]);
+                HighScore = Convert.ToInt32(cred[3]);
                 return;
             }
         }

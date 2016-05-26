@@ -36,7 +36,8 @@
             </Button.Background>
             <Button.Content>
                 <TextBlock Text="{Binding Path=Answers[0]}" VerticalAlignment="Top" 
-                           Margin="30,-75,0,0" FontSize="20"/>
+                           Margin="30,-75,0,0" FontSize="20" HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
             </Button.Content>
         </Button>
         <Button x:Name="Answer2" Grid.Row="2" Grid.ColumnSpan="2" Padding="100,100,100,0"
@@ -48,7 +49,8 @@
             </Button.Background>
             <Button.Content>
                 <TextBlock Text="{Binding Path=Answers[1]}" VerticalAlignment="Top" 
-                           Margin="30,-75,0,0" FontSize="20"/>
+                           Margin="30,-75,0,0" FontSize="20" HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
             </Button.Content>
         </Button>
         <Button x:Name="Answer3" Grid.Row="3" Grid.ColumnSpan="2" Padding="100,100,100,0"
@@ -60,7 +62,8 @@
             </Button.Background>
             <Button.Content>
                 <TextBlock Text="{Binding Path=Answers[2]}" VerticalAlignment="Top" 
-                           Margin="30,-75,0,0" FontSize="20"/>
+                           Margin="30,-75,0,0" FontSize="20" HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
             </Button.Content>
         </Button>
     </Grid>

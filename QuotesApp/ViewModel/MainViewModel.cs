@@ -174,10 +174,11 @@ namespace QuotesApp.ViewModel
 
             if (cred == null) return false;
 
-            if(cred.Length == 3)
+            if(cred.Length == 4)
             {
-                LoginViewModel.Email = cred[0];
-                LoginViewModel.Password = cred[1];
+                LoginViewModel.UserID = new Guid(cred[0]);
+                LoginViewModel.Email = cred[1];
+                LoginViewModel.Password = cred[2];
                 return true;
             }
 
@@ -262,7 +263,7 @@ namespace QuotesApp.ViewModel
 
         private string MakeStringParsable()
         {
-            return string.Format("{0};{1};{2}", LoginViewModel.Email, LoginViewModel.Password, _userHighScore);
+            return string.Format("{0};{1};{2};{3}", LoginViewModel.UserID, LoginViewModel.Email, LoginViewModel.Password, _userHighScore);
         }
 
         private UserAuthenticationEnum ValidateUser()
