@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using QuotesApp.Model;
+using System.Linq;
 using System.ComponentModel;
 using QuotesApp.DatabaseClients;
 using Microsoft.WindowsAzure.MobileServices;
@@ -217,6 +218,7 @@ namespace QuotesApp.ViewModel
                 {
                     case UserAuthenticationEnum.Success:
                         _navigationService.NavigateTo(ViewModelLocator.SecondPageKey);
+                        LoginViewModel.UserID = new Guid(QuoteItems.First(x => x.EMail.ToLower() == LoginViewModel.Email.ToLower()).Id);
                         LoginViewModel.LoginEnum = LoginPageEnum.Login;
                         IsolatedStorageManager.SaveToIsolatedStorage(MakeStringParsable());
                         break;
@@ -263,7 +265,7 @@ namespace QuotesApp.ViewModel
 
         private string MakeStringParsable()
         {
-            return string.Format("{0};{1};{2};{3}", LoginViewModel.UserID, LoginViewModel.Email, LoginViewModel.Password, _userHighScore);
+            return string.Format("{0};{1};{2};{3}", LoginViewModel.UserID.ToString(), LoginViewModel.Email, LoginViewModel.Password, _userHighScore);
         }
 
         private UserAuthenticationEnum ValidateUser()

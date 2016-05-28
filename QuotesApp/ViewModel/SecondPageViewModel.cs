@@ -124,9 +124,10 @@ namespace QuotesApp.ViewModel
                         Highscore = Score
                     };
                     await quoteItemsTable.UpdateAsync(signUpItem);
-
                     HighScore = Score;
                 }
+
+                Score = 0;
             }
 
             await Initialize();
@@ -159,6 +160,8 @@ namespace QuotesApp.ViewModel
 
                 if (wrongAnswers == null) return;
                 if (wrongAnswers.Count == 0) return;
+
+                Answers.Clear();
 
                 Answers.Add(GameViewModel.Item.Title);
 
