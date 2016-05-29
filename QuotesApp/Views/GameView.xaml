@@ -9,6 +9,49 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <Style x:Key="TransparentButton" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundTransparentBrush}" />
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}" />
+            <Setter Property="Padding" Value="8,4,8,4" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="UseSystemFocusVisuals" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          Content="{TemplateBinding Content}"
+                          ContentTransitions="{TemplateBinding ContentTransitions}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Padding="{TemplateBinding Padding}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                          AutomationProperties.AccessibilityView="Raw"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid x:Name="BasicGrid" Background="#E8E6E8">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -29,7 +72,7 @@
                    TextWrapping="Wrap" Foreground="Black" TextAlignment="Center" FontSize="15"/>
         <Button x:Name="Answer1" Grid.Row="1" Grid.ColumnSpan="2" Padding="100,100,100,0"
                 Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress, Mode=TwoWay}"
-                CommandParameter="Answer1">
+                CommandParameter="Answer1" Style="{StaticResource TransparentButton}">
             <Button.Background>
                 <ImageBrush ImageSource="/Assets/Button.png" Stretch="Fill" 
                             AlignmentX="Center" AlignmentY="Center"/>
@@ -42,7 +85,7 @@
         </Button>
         <Button x:Name="Answer2" Grid.Row="2" Grid.ColumnSpan="2" Padding="100,100,100,0"
                 Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress, Mode=TwoWay}"
-                CommandParameter="Answer2">
+                CommandParameter="Answer2" Style="{StaticResource TransparentButton}">
             <Button.Background>
                 <ImageBrush ImageSource="/Assets/Button.png" Stretch="Fill" 
                             AlignmentX="Center" AlignmentY="Center"/>
@@ -55,7 +98,7 @@
         </Button>
         <Button x:Name="Answer3" Grid.Row="3" Grid.ColumnSpan="2" Padding="100,100,100,0"
                 Margin="-20,0,0,0" HorizontalAlignment="Center" Command="{Binding Path=AnswerPress, Mode=TwoWay}"
-                CommandParameter="Answer3">
+                CommandParameter="Answer3" Style="{StaticResource TransparentButton}">
             <Button.Background>
                 <ImageBrush ImageSource="/Assets/Button.png" Stretch="Fill" 
                             AlignmentX="Center" AlignmentY="Center"/>
