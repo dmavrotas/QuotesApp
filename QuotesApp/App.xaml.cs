@@ -7,6 +7,9 @@ using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using Microsoft.WindowsAzure.MobileServices;
+using Windows.Networking.PushNotifications;
+using Microsoft.WindowsAzure.Messaging;
+using Windows.UI.Popups;
 
 namespace QuotesApp
 {
@@ -31,7 +34,7 @@ namespace QuotesApp
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
+            InitNotificationsAsync();
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -73,6 +76,23 @@ namespace QuotesApp
             Messenger.Default.Register<NotificationMessageAction<string>>(
                 this,
                 HandleNotificationMessage);
+        }
+
+        private async void InitNotificationsAsync()
+        {
+            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+
+            var hub = new NotificationHub("QuotesHub", "Endpoint=sb://quotesnamespace.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=4oZakzPcL9FMddQ8wDqehpWG4PXOg/hJrYgew8b7jpY=");
+            var result = await hub.RegisterNativeAsync(channel.Uri);
+
+            // Displays the registration ID so you know it was successful
+            //if (result.RegistrationId != null)
+            //{
+            //    var dialog = new MessageDialog("Registration successful: " + result.RegistrationId);
+            //    dialog.Commands.Add(new UICommand("OK"));
+            //    await dialog.ShowAsync();
+            //}
+
         }
 
         #endregion

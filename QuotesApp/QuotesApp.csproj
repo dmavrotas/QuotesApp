@@ -134,6 +134,7 @@
     <None Include="Win10_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\BadgeLogo.scale-400.png" />
     <Content Include="Assets\black_oval.png" />
     <Content Include="Assets\button.png" />
     <Content Include="Assets\field.png" />
