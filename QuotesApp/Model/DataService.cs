@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using QuotesApp.Converters;
+using System.Net;
 
 namespace QuotesApp.Model
 {
@@ -43,6 +45,11 @@ namespace QuotesApp.Model
 
                 var temp = JsonConvert.DeserializeObject<DataItem[]>(final, settings);
 
+                foreach (var item in temp)
+                {
+                    item.Content = WebUtility.HtmlDecode(item.Content);
+                }
+
                 if (temp == null) return null;
                 if (!(temp is DataItem[])) return null;
                 if (temp.Length == 0) return null;
@@ -68,10 +75,15 @@ namespace QuotesApp.Model
                 var final = await msg.Content.ReadAsStringAsync();
                 JsonSerializerSettings settings = new JsonSerializerSettings()
                 {
-                    StringEscapeHandling = StringEscapeHandling.EscapeHtml
+                    StringEscapeHandling = StringEscapeHandling.EscapeHtml,
                 };
 
                 var temp = JsonConvert.DeserializeObject<DataItem[]>(final, settings);
+
+                foreach(var item in temp)
+                {
+                    WebUtility.HtmlDecode(item.Content);
+                }
 
                 if (temp == null) return null;
                 if (!(temp is DataItem[])) return null;

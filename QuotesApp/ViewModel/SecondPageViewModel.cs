@@ -123,6 +123,7 @@ namespace QuotesApp.ViewModel
                         Password = cred[2],
                         Highscore = Score
                     };
+
                     await quoteItemsTable.UpdateAsync(signUpItem);
                     HighScore = Score;
                 }
